@@ -1,0 +1,17 @@
+# Pinbelegung Step-down MP1584 (Shop RBS11139), Footprint Bauteile:MP1584_Sockel. Stand 04.11.2026.
+# Lage an Merkmalen des Moduls, nicht am Blickwinkel: Plus-Paare (eckige Pads) auf der Laengsseite mit dem Trimmer,
+# Minus-Paare auf der Laengsseite mit der Spule; der Trimmer sitzt am OUT-Ende; die Aufschrift IN und OUT steht nur auf
+# der Unterseite. Je Anschluss zwei Loecher, beide verbunden.
+# Quellen: Aufschrift der Unterseite (eigenes Foto, gelesen 04.11.2026) und Pieptest
+# 04.11.2026: je Paar Durchgang, IN- gegen OUT- Durchgang, IN- gegen IN+ kein Durchgang.
+# Footprint von der Modulseite gesehen: Plus-Spalte links (Pads 1 und 3), Minus-Spalte rechts (Pads 2 und 4), IN oben,
+# OUT unten mit dem Trimmer neben Pad 3. Am 1:1-Ausdruck mit aufgelegtem Modul pruefen, sonst sind Plus und Minus vertauscht.
+teil = "Step-down MP1584"
+quelle = "Aufschrift Unterseite und Pieptest am RBS11139 aus Lieferung 8710309 (04.11.2026), MP1584EN Datenblatt S. 2 (Eingangsbereich)"
+
+[pin]
+1 = { name = "IN+",  art = "versorgung_ein", spannung = [4.5, 28.0], quelle = "Aufschrift Unterseite IN+, 04.11.2026" }
+2 = { name = "IN-",  art = "masse", quelle = "Aufschrift Unterseite IN-, Durchgang zu OUT- gemessen 04.11.2026" }
+# Die Ausgangsspannung stellt der Trimmer ein, vor dem Einbau ohne Last auf 5,0 V (im Uhrzeigersinn mehr Spannung).
+3 = { name = "OUT+", art = "versorgung_aus", spannung = 5.0, quelle = "Aufschrift Unterseite OUT+, 04.11.2026" }
+4 = { name = "OUT-", art = "masse", quelle = "Aufschrift Unterseite OUT-, 04.11.2026" }

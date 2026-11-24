@@ -1,0 +1,37 @@
+# Pinbelegung XIAO ESP32-C3 (Seeed, Shop RBS18991), Footprint Bauteile:XIAO_C3_Sockel. Stand 03.11.2026.
+# Fundstellen in den Herstellerunterlagen (nicht veroeffentlicht):
+#   XIAO_Series_SCH_Symbols.zip: Name und Reihenfolge der Pins 1 bis 14.
+#   XIAO_ESP32C3_v1.3_SCH_260116.pdf Seite 3 (als Bild gelesen): D-Pin zu GPIO, Regler TLV75733, R6 an D9, 5V-Pin am USB-Knoten.
+#   ESP32-C3_Espressif_Datasheet.pdf Version 2.4: Seite 30 Tabelle 3-1 (Strapping GPIO2, GPIO8, GPIO9), Seite 17 (Treiberstrom).
+# gpio ist die Nummer des Chip-Pins, so wie sie in der ESPHome-YAML steht (GPIO4 ...). D6 und D7 stammen nur aus der
+# Pin-Map des Seeed-Wikis (Rechercheur, 03.11.2026). D2 bis D5 nennt der Schaltplan S. 3 als MTMS, MTDI, MTCK, MTDO; die
+# GPIO-Nummern dazu stehen im ESP32-C3-Datenblatt S. 20 (Gegenpruefung 06.11.2026). Pin 14 heisst bei Seeed VUSB.
+# Pin 14 (Aufdruck "5V") haengt direkt am USB-Knoten, vor Sicherung F1 (6 V, 500 mA) und Diode D1 des Moduls (Schaltplan S. 3).
+# Seeed-Wiki: Einspeisung ueber diesen Pin nur ueber eine Diode. Auf der Uhr-Platine speist ihn darum eine 1N5819 aus +5V.
+# Zweite Reihe gibt es nicht; alle 14 Pins sind die Stiftleisten des Moduls.
+teil = "XIAO ESP32-C3"
+quelle = "XIAO_Series_SCH_Symbols.zip (Pin 1 bis 14), XIAO-Schaltplan v1.3 S. 3 (GPIO)"
+
+[pin]
+# Linke Reihe von oben, USB-Buchse oben, Aufdruck lesbar: Pin 1 am USB-Ende.
+1  = { name = "D0",  art = "io", pegel = 3.3, gpio = 2,  strapping = true, quelle = "XIAO-Schaltplan S. 3: D0 = GPIO2; ESP32-C3 Datenblatt S. 30: Strapping" }
+2  = { name = "D1",  art = "io", pegel = 3.3, gpio = 3,  quelle = "XIAO-Schaltplan S. 3: D1 = GPIO3 (Gegenpruefung 06.11.2026)" }
+# MTMS und MTDI treiben laut Datenblatt S. 17 nur 10 mA: fuer I2C unerheblich, fuer eine LED an diesen Pins zu wenig.
+3  = { name = "D2",  art = "io", pegel = 3.3, gpio = 4,  quelle = "XIAO-Schaltplan S. 3: D2 = MTMS; ESP32-C3 Datenblatt S. 20: MTMS = GPIO4" }
+4  = { name = "D3",  art = "io", pegel = 3.3, gpio = 5,  quelle = "XIAO-Schaltplan S. 3: D3 = MTDI; ESP32-C3 Datenblatt S. 20: MTDI = GPIO5" }
+5  = { name = "D4",  art = "io", pegel = 3.3, gpio = 6,  quelle = "XIAO-Schaltplan S. 3: D4 = MTCK; ESP32-C3 Datenblatt S. 20: MTCK = GPIO6" }
+6  = { name = "D5",  art = "io", pegel = 3.3, gpio = 7,  quelle = "XIAO-Schaltplan S. 3: D5 = MTDO; ESP32-C3 Datenblatt S. 20: MTDO = GPIO7" }
+7  = { name = "D6",  art = "io", pegel = 3.3, gpio = 21, quelle = "Symbol (Name); GPIO21 (TX) nur aus der Seeed-Wiki Pin-Map" }
+# Rechte Reihe von oben: Pin 14 am USB-Ende, Pin 8 am anderen Ende.
+8  = { name = "D7",  art = "io", pegel = 3.3, gpio = 20, quelle = "Symbol (Name); GPIO20 (RX) nur aus der Seeed-Wiki Pin-Map" }
+9  = { name = "D8",  art = "io", pegel = 3.3, gpio = 8,  strapping = true, quelle = "XIAO-Schaltplan S. 3: D8 = GPIO8; ESP32-C3 Datenblatt S. 30: Strapping" }
+# D9 haengt am BOOT-Taster und hat auf dem Modul 10 kOhm (R6) nach 3,3 V.
+10 = { name = "D9",  art = "io", pegel = 3.3, gpio = 9,  strapping = true, pullup = true, pullup_ohm = 10000, quelle = "XIAO-Schaltplan S. 3: D9 = GPIO9, R6 10k nach VCC_3V3, BOOT-Taster nach GND; ESP32-C3 Datenblatt S. 30: Strapping" }
+11 = { name = "D10", art = "io", pegel = 3.3, gpio = 10, quelle = "XIAO-Schaltplan S. 3: D10 = GPIO10" }
+# Ausgang des Reglers auf dem Modul (TLV75733, XIAO-Schaltplan S. 3).
+12 = { name = "3V3", art = "versorgung_aus", spannung = 3.3, quelle = "XIAO-Schaltplan S. 3: Ausgang des Reglers TLV75733" }
+13 = { name = "GND", art = "masse" }
+# Zulaessiger Bereich gerechnet, nicht aus den Seeed-Unterlagen: oben 5,5 V (TLV75733 laut TI hoechstens 5,5 V am Eingang,
+# absolut 6 V; Sicherung F1 traegt "6V"); unten etwa 3,9 V (3,3 V plus Dropout des Reglers plus die Schottky-Diode D1 auf dem
+# Modul). Hinter der 1N5819 der Uhr-Platine liegen etwa 4,7 V an, eine Messung prueft das.
+14 = { name = "VBUS", art = "versorgung_ein", spannung = [3.9, 5.5], quelle = "XIAO-Schaltplan S. 3 (VUSB, F1, D1, TLV75733); Bereich gerechnet, Obergrenze TI-Datenblatt TLV757P (Rechercheur 03.11.2026)" }

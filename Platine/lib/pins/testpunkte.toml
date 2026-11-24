@@ -1,0 +1,10 @@
+# Pinbelegung der Testpunkt-Leiste TP1 (4er-Stiftleiste am Platinenrand), Probe 3.
+# Reine Messpunkte, kein Bauteil mit Datenblatt: die Belegung ist eine eigene Festlegung.
+teil = "Testpunkte"
+quelle = "eigene Festlegung Probe 3"
+
+[pin]
+1 = { name = "12V", art = "passiv" }
+2 = { name = "5V",  art = "passiv" }
+3 = { name = "3V3", art = "passiv" }
+4 = { name = "GND", art = "masse" }

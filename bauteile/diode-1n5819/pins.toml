@@ -1,0 +1,12 @@
+# Pinbelegung Schottky-Diode 1N5819 (DO-41, axial, Vishay). Stand 13.11.2026.
+# Quelle: Vishay 1N5817/1N5818/1N5819, Dok. 88525, Rev. 01-Jul-2020, S. 1: "Polarity: color band denotes the cathode end",
+#   S. 3: Gehaeusezeichnung DO-41 mit Ring.
+# Das Datenblatt nummeriert die Anschluesse nicht. Die Nummerierung 1 = Anode, 2 = Kathode ist eine Festlegung dieser Akte.
+# Grenzwerte (S. 1): VRRM 40 V, IF(AV) 1,0 A, IFSM 25 A. VF hoechstens 0,600 V bei 1,0 A.
+# Hersteller der Stuecke im Bestand offen.
+teil = "Schottky-Diode 1N5819 (DO-41)"
+quelle = "Vishay 1N5817/18/19 Dok. 88525, S. 1 (Polaritaet, Grenzwerte), S. 3 (Gehaeuse)"
+
+[pin]
+1 = { name = "A", art = "anode",   quelle = "Vishay 88525 S. 1: Anode ist das Ende ohne Farbring (Folgerung aus 'color band denotes the cathode end')" }
+2 = { name = "K", art = "kathode", quelle = "Vishay 88525 S. 1: color band denotes the cathode end" }

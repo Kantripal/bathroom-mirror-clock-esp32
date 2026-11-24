@@ -1,0 +1,35 @@
+# Pinbelegung Pegelwandler RBS10128 (JY-MCU, 4 Kanaele, eigener 3,3-V-Regler), Footprint Bauteile:Pegelwandler_Sockel.
+# Stand 06.11.2026. Aufdruck am gelieferten Teil gelesen am 04.11.2026 (eigene Fotos); Lage und Paarung der Kanaele am
+# Steckbrett gemessen am 06.11.2026.
+# Stifte: gerade Leisten, im Lieferzustand unter dem Modul nach aussen gebogen, am 04.11.2026 senkrecht zurueckgebogen.
+# Aufdruck nur auf der Textseite (die Seite ohne Bauteile; sie liegt beim Stecken OBEN, Bauteile und Kunststoff der Leisten
+# zeigen zur Platine) und nur am Ende mit der Versorgung: L-Seite "3V" dann "GND", H-Seite "5V" dann "GND". Mit lesbarem
+# Aufdruck liegt 5V oben links und 3V oben rechts (Scan 04.11.2026, Steckbrett-Foto 06.11.2026, berichtigt 08.11.2026).
+# Die vier unbeschrifteten Stifte je Seite sind die Kanaele. Gemessen 06.11.2026 (nur 12 V am Steckbrett): ein
+# L-Stift auf Masse zieht genau den gerade gegenueberliegenden H-Stift auf etwa 1 mV, die anderen bleiben bei 4,76 V.
+# Also L1 zu H1 bis L4 zu H4, gezaehlt vom Versorgungsende.
+# Reihenabstand 12,66 mm gemessen (13,33 aussen minus 0,67 Stiftdicke, 04.11.2026), im Footprint 12,7 (5 x 2,54).
+# 3V ist der Ausgang des eigenen Reglers (Aufdruck "I<150mA" mit Pfeil 5V nach 3V; gemessen 06.11.2026: 3,342 V bei
+# 5 V am 5V-Stift). Er bleibt auf der Uhr-Platine unverbunden (halt = true), damit nicht zwei Regler (XIAO und Modul)
+# gegeneinander arbeiten.
+# Stromlos gemessen 06.11.2026 (DT132A): H1 gegen 5V 67,5 kOhm, L1 gegen 3V kein fester Wert; also keine 10-kOhm-Pull-ups
+# wie beim alten RBS16466. Die Pull-ups fuer die Anzeige kommen von R1 und R2 (2,2 kOhm) auf der Uhr-Platine.
+# Ruhepegel unter Strom (06.11.2026): L1 3,363 V, H1 4,76 V.
+teil = "Pegelwandler RBS10128"
+quelle = "Aufdruck am Teil (Unterseite) 04.11.2026; Lage und Paarung am Steckbrett gemessen 06.11.2026"
+
+[pin]
+# Seite L (3,3 V), vom Versorgungsende aus (das Ende mit dem Aufdruck 3V und 5V auf der Textseite)
+1  = { name = "3V",  art = "versorgung_aus", spannung = 3.3, halt = true, quelle = "Aufdruck am Teil 04.11.2026; 3,342 V gemessen 06.11.2026" }
+2  = { name = "GND", art = "masse", quelle = "Aufdruck am Teil 04.11.2026; Durchgang zum GND der H-Seite gemessen 04. und 06.11.2026" }
+3  = { name = "L1",  art = "io", pegel = 3.3, quelle = "Paarung mit H1 am Steckbrett gemessen 06.11.2026 (L1 auf Masse zieht H1 auf 1 mV)" }
+4  = { name = "L2",  art = "io", pegel = 3.3, quelle = "Paarung mit H2 am Steckbrett gemessen 06.11.2026" }
+5  = { name = "L3",  art = "io", pegel = 3.3, quelle = "Paarung mit H3 am Steckbrett gemessen 06.11.2026" }
+6  = { name = "L4",  art = "io", pegel = 3.3, quelle = "Paarung mit H4 am Steckbrett gemessen 06.11.2026" }
+# Seite H (5 V), vom Versorgungsende aus. Der Bereich am 5V-Stift ist nicht belegt, das Shopblatt nennt nur 5 V.
+7  = { name = "5V",  art = "versorgung_ein", spannung = [4.5, 5.5], quelle = "Aufdruck am Teil 04.11.2026; Bereich 4,5 bis 5,5 V ist eine Festlegung fuer die Pruefung (Shopblatt nennt nur 5 V), am Steckbrett 5,03 V" }
+8  = { name = "GND", art = "masse", quelle = "Aufdruck am Teil 04.11.2026; Durchgang zum GND der L-Seite gemessen 04. und 06.11.2026" }
+9  = { name = "H1",  art = "io", pegel = 5.0, quelle = "Paarung mit L1 am Steckbrett gemessen 06.11.2026" }
+10 = { name = "H2",  art = "io", pegel = 5.0, quelle = "Paarung mit L2 am Steckbrett gemessen 06.11.2026" }
+11 = { name = "H3",  art = "io", pegel = 5.0, quelle = "Paarung mit L3 am Steckbrett gemessen 06.11.2026" }
+12 = { name = "H4",  art = "io", pegel = 5.0, quelle = "Paarung mit L4 am Steckbrett gemessen 06.11.2026" }

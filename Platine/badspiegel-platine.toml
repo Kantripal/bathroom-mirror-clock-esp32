@@ -1,0 +1,217 @@
+# Probeentwurf 4 der Uhr-Platine, gestapelt hinter der Anzeige, Stand 06.11.2026. Ansicht von der Modulseite.
+# Gegenueber Probe 3 (03.11.2026, dort neu D1, D2, TP1, R3, R4, C2, Kabelbinder-Loecher): Footprint des Pegelwandlers
+# berichtigt (3V und 5V am unteren Ende, am Steckbrett gemessen 06.11.2026), Netze von U2 und U4 auf die Pintabellen vom
+# 04.11.2026 (Uhrmodul nur 4er-Reihe SCL SDA VCC GND; Pegelwandler 3V GND L1..L4 und 5V GND H1..H4 vom Versorgungsende),
+# alle Annahmen gestrichen, weil Lochbilder und Belegungen am 04. und 06.11.2026 gemessen sind (Steckbriefe in Bauteile/).
+# Anordnung: Mit den gemessenen Footprints (Anzeige 57,4 statt 60,54 mm Reihenabstand, Pegelwandler 12,7 statt 11,3,
+# Wandler mit Lasche) stiessen in Probe 3 die Stiftreihe der Anzeige und die L-Reihe des Pegelwandlers zusammen und die
+# Hoefe von Pegelwandler und XIAO ueberlappten. Darum: Anzeige bleibt bei x 35; Pegelwandler, XIAO und Wandler ruecken
+# mit je 0,3 mm Hofabstand auf (16,5 / 34 / 52,1); alles rechts davon wandert 5,5 mm nach rechts, die Platine wird
+# 134,1 statt 128,6 mm lang; C1, D1, R4 weichen der rechten Stiftreihe der Anzeige aus (C1 oben, D1 rechts davon).
+# Der Steckbrett-Test mit genau diesen Modulen lief am 06.11.2026.
+[platine]
+name = "badspiegel-platine"
+titel = "Badspiegel-Uhr"
+breite = 134.1
+hoehe = 27
+regeln = "aisler-enig"
+# So bestellt am 07.11.2026, darum hier nicht aendern. Die naechste Fassung heisst "v5", nicht "Probe 5" (13.11.2026).
+revision = "Probe 4"
+datum = "2026-11-06"
+masseflaeche = true
+
+# Hinten unter dem Uhrmodul, rechts neben seiner 4er-Reihe (x 80 bis 113): Text gespiegelt, darunter das Schreibfeld.
+[aufdruck]
+x = 96.0
+y = 10
+feld = true
+
+# Aisler-Logo-Platzhalter fuer den Sponsoring-Rabatt, 32 x 8 mm auf der Rueckseite unter dem Schreibfeld (x 80 bis 112,
+# y 17,85 bis 25,85). Die bestellte Platine (07.11.2026) traegt ihn noch von Hand per pcbnew gesetzt, an genau dieser Stelle;
+# `pruefen` erkennt ihn dort und meldet keine Abweichung. Ein neues `bauen` setzt ihn aus diesem Eintrag selbst.
+[aisler_logo]
+x = 96.0
+y = 21.85
+laenge = 32
+richtung = "waagerecht"
+seite = "hinten"
+
+[bibliotheken]
+footprints = { Uhr = "lib/Uhr.pretty", Bauteile = "../bauteile/Bauteile.pretty" }
+
+[[teil]]
+ref = "J1"
+wert = "12V"
+symbol = "Connector:Conn_01x02_Pin"
+footprint = "Uhr:Kabel_12V"
+x = 127.4
+y = 6.5
+gruppe = "Versorgung"
+
+[[teil]]
+ref = "C1"
+wert = "47uF 25V"
+symbol = "Device:C_Polarized"
+# Oben an der Kante, frei von der rechten Stiftreihe der Anzeige (deren Hof beginnt bei y 7,95) und 0,3 mm vor C2.
+footprint = "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm"
+x = 63.0
+y = 4.9
+gruppe = "Versorgung"
+
+[[teil]]
+ref = "U3"
+wert = "Wandler MP1584"
+symbol = "Connector:Conn_01x04_Pin"
+footprint = "Bauteile:MP1584_Sockel"
+pintabelle = "../bauteile/mp1584-stepdown/pins.toml"
+# y 12,25 statt 13,5: Der Footprint vom 04.11.2026 hat seinen Ursprung in der Mitte der Loecher, die Lasche am OUT-Ende
+# ist 2,5 mm laenger als der Rand am IN-Ende; so steht der Koerper mittig, 0,45 mm Luft zu beiden Platinenkanten.
+x = 52.1
+y = 12.25
+gruppe = "Versorgung"
+
+[[teil]]
+ref = "U1"
+wert = "XIAO ESP32-C3"
+symbol = "Connector:Conn_01x14_Pin"
+footprint = "Bauteile:XIAO_C3_Sockel"
+pintabelle = "../bauteile/xiao-esp32-c3/pins.toml"
+x = 34.0
+y = 13.5
+gruppe = "Rechner"
+
+[[teil]]
+ref = "U2"
+wert = "Uhrmodul DS3231"
+symbol = "Connector:Conn_01x04_Pin"
+footprint = "Bauteile:DS3231_ZS042_Sockel"
+pintabelle = "../bauteile/ds3231-zs042/pins.toml"
+x = 94.3
+y = 13.5
+gruppe = "Rechner"
+
+[[teil]]
+ref = "J2"
+wert = "Joystick"
+symbol = "Connector:Conn_01x02_Pin"
+footprint = "Uhr:Kabel_Joystick"
+x = 127.4
+y = 16
+gruppe = "Rechner"
+
+[[teil]]
+ref = "U4"
+wert = "Pegelwandler"
+symbol = "Connector:Conn_01x12_Pin"
+footprint = "Bauteile:Pegelwandler_Sockel"
+# Um 180 Grad gedreht: H-Reihe (5 V) links zur Stiftreihe der Anzeige, L-Reihe (3,3 V) rechts zum XIAO, 3V und 5V oben.
+pintabelle = "../bauteile/pegelwandler-rbs10128/pins.toml"
+x = 16.5
+y = 13
+drehung = 180
+gruppe = "Anzeige"
+
+[[teil]]
+ref = "R1"
+wert = "2k2"
+symbol = "Device:R"
+footprint = "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+# Pin 1 (links, aussen) traegt CLK_5V neben der Stiftreihe der Anzeige, Pin 2 (innen) +5V beim Pegelwandler. Mit +5V
+# aussen musste die 5-V-Bahn am Rand an der Stiftreihe vorbei und wurde dort 0,12 mm schmal (Probe 4, 06.11.2026).
+x = 9.9
+y = 3.4
+gruppe = "Anzeige"
+
+[[teil]]
+ref = "R2"
+wert = "2k2"
+symbol = "Device:R"
+footprint = "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+# Wie R1: Pin 1 (aussen) DIO_5V, Pin 2 (innen) +5V.
+x = 9.9
+y = 24.2
+gruppe = "Anzeige"
+
+[[teil]]
+ref = "U5"
+wert = "Anzeige"
+symbol = "Connector:Conn_01x08_Pin"
+footprint = "Bauteile:Anzeige_TM1637_Stifte"
+pintabelle = "../bauteile/tm1637-anzeige/pins.toml"
+x = 35
+y = 13.5
+gruppe = "Anzeige"
+
+[[teil]]
+ref = "D1"
+wert = "1N5819"
+symbol = "Device:D_Schottky"
+# y 12 statt 13, sonst liegt der Schriftzug R4 auf dem oberen Pad von D1.
+footprint = "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"
+x = 67.4
+y = 12
+drehung = 270
+gruppe = "Versorgung"
+
+[[teil]]
+ref = "D2"
+wert = "1N5819"
+symbol = "Device:D_Schottky"
+footprint = "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"
+x = 115.4
+y = 8.5
+gruppe = "Versorgung"
+
+[[teil]]
+ref = "TP1"
+wert = "TP 12V 5V 3V3 GND"
+symbol = "Connector:Conn_01x04_Pin"
+footprint = "Uhr:Testpunkte_4er"
+pintabelle = "lib/pins/testpunkte.toml"
+x = 115.8
+y = 1.9
+gruppe = "Versorgung"
+
+[[teil]]
+ref = "R3"
+wert = "10k"
+symbol = "Device:R"
+footprint = "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+x = 115.4
+y = 16
+gruppe = "Rechner"
+
+[[teil]]
+ref = "R4"
+wert = "1k"
+symbol = "Device:R"
+footprint = "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+x = 63.3
+y = 24.2
+gruppe = "Rechner"
+
+[[teil]]
+ref = "C2"
+wert = "100nF 50V"
+symbol = "Device:C"
+footprint = "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+x = 68.1
+y = 3.6
+gruppe = "Rechner"
+
+[netze]
+"+12V_IN" = ["J1.1", "D2.2"]
+"+12V" = ["C1.1", "U3.1", "D2.1", "TP1.1"]
+GND = ["J1.2", "C1.2", "U3.2", "U3.4", "U1.13", "U2.4", "U4.2", "U4.8", "J2.2", "U5.3", "C2.2", "TP1.4"]
+"+5V" = ["U3.3", "U4.7", "R1.2", "R2.2", "U5.4", "D1.2", "TP1.2"]
+"+4V7" = ["D1.1", "U1.14"]
+"+3V3" = ["U1.12", "U2.3", "R3.1", "TP1.3"]
+SDA = ["U1.3", "U2.2"]
+SCL = ["U1.4", "U2.1"]
+CLK_3V = ["U1.5", "U4.3"]
+DIO_3V = ["U1.6", "U4.4"]
+CLK_5V = ["U4.9", "R1.1", "U5.1"]
+DIO_5V = ["U4.10", "R2.1", "U5.2"]
+JOY_IN = ["J2.1", "R3.2", "R4.1"]
+JOY = ["R4.2", "C2.1", "U1.11"]
+NC = ["U1.1", "U1.2", "U1.7", "U1.8", "U1.9", "U1.10", "U4.1", "U4.5", "U4.6", "U4.11", "U4.12", "U5.5", "U5.6", "U5.7", "U5.8"]

@@ -1,0 +1,30 @@
+# Pinbelegung Anzeige TM1637, 4 Stellen, 0,56 Zoll (Shop RBS17332), Footprint Bauteile:Anzeige_TM1637_Stifte. Stand 06.11.2026.
+# Reihenfolge: bei aufrechten Ziffern, an beiden Enden, von oben: CLK, DIO, GND, 5V. Quellen: Shopfoto RBS17332 S. 1
+# (Rueckseite mit Aufdruck neben den Stiften und Vorderseite mit Ziffern, beide Bilder zusammen gelesen) und die erste
+# blaue Anzeige, die am 30.10.2026 abgelesen wurde: Stifte links, von oben CLK, DIO, GND, 5V.
+# Aus dem Gedaechtnis waere hier CLK, DIO, VCC, GND gestanden, also Versorgung vertauscht: genau der Fehler, den diese
+# Tabelle verhindern soll.
+# Elektrik: TM1637 Datenblatt (TitanMicro): VDD 4,5 bis 5,5 V und VIH = 0,7 VDD auf S. 9, CLK ist Eingang (S. 2), DIO zieht
+# der Chip beim Quittieren auf Low und gibt sie dann frei (S. 3), typische Schaltung S. 8 mit 10 kOhm Pull-ups und 100 pF.
+# Am Tisch (24.10.2026) lief die Anzeige nur mit je 2,2 kOhm von CLK und DIO nach 5 V (R1 und R2 auf der Uhr-Platine).
+# Pull-ups auf dem Modul: gemessen 04.11.2026 an der weissen (DT132A, stromlos) CLK gegen 5V 9,91 kOhm, auf der
+# Rueckseite zwei Widerstaende "103"; darum pullup_ohm = 10000. Zusammen mit 2,2 kOhm: 1,8 kOhm, 2,8 mA bei 5 V.
+# Die vier Keramikkondensatoren tragen keinen Aufdruck, die Vermutung "nF an CLK und DIO" (Grund fuer die 2,2 kOhm) bleibt
+# unbelegt. Steckbrett 06.11.2026: mit diesen Werten laeuft die Anzeige am XIAO ueber den RBS10128, 17 Minuten ohne Fehler.
+# Stiftleiste: die weisse kam ohne Stifte; gerade Stifte an beiden Enden geloetet und gleichnamige Stifte beider Reihen
+# durchgepiept (06.11.2026). Reihenabstand 57,4 mm gemessen, steht im Footprint.
+teil = "Anzeige TM1637"
+quelle = "Shopfoto RBS17332 S. 1 und blaue Anzeige 30.10.2026 (Lage), TM1637 Datenblatt S. 2, 3, 9 (Elektrik)"
+
+[pin]
+# Reihe links (bei aufrechten Ziffern), von oben
+1 = { name = "CLK", art = "eingang",    pegel = 5.0, vih = 3.5, pullup = true, pullup_ohm = 10000, quelle = "Aufdruck am Teil; Pull-up 9,91 kOhm gemessen 04.11.2026" }
+2 = { name = "DIO", art = "open_drain", pegel = 5.0, vih = 3.5, pullup = true, pullup_ohm = 10000, quelle = "Aufdruck am Teil; Pull-up wie CLK (zwei Widerstaende 103)" }
+3 = { name = "GND", art = "masse" }
+4 = { name = "5V",  art = "versorgung_ein", spannung = [4.5, 5.5] }
+# Reihe rechts, auf der Platine nur als Halt (halt = true). Beide Reihen sind am Modul verbunden: Durchgang gleichnamiger
+# Stifte gemessen (06.11.2026). Die Pull-ups stehen nur an Pin 1 und 2, sonst zaehlte das Werkzeug sie doppelt.
+5 = { name = "CLK", art = "eingang",    pegel = 5.0, vih = 3.5, halt = true }
+6 = { name = "DIO", art = "open_drain", pegel = 5.0, vih = 3.5, halt = true }
+7 = { name = "GND", art = "masse", halt = true }
+8 = { name = "5V",  art = "versorgung_ein", spannung = [4.5, 5.5], halt = true }

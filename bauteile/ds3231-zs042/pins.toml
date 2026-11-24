@@ -1,0 +1,22 @@
+# Pinbelegung Uhrmodul DS3231 ZS-042 (Shop RBS10176), Footprint Bauteile:DS3231_ZS042_Sockel. Stand 04.11.2026.
+# Auf der Platine traegt nur die 4er-Reihe Stifte (04.11.2026): beim Modul aus dem Endbau ist die 6er-Reihe mit
+# Zinn und Stiftresten gefuellt, daran wird nicht mehr geloetet. Die 6er-Reihe (GND, VCC, SDA, SCL, SQW, 32K laut
+# Shopfoto RBS10176 S. 1) kommt darum hier nicht vor.
+# Reihenfolge der 4er-Reihe am Aufdruck des Moduls gelesen (eigenes Foto vom 04.11.2026, Chipseite):
+# SCL auf der Seite der LED "POWER" (auf der Zellenseite: Seite, an der in der 6er-Reihe 32K liegt), GND auf der Seite
+# der Loetbruecken A0 A1 A2.
+# Pinarten: DS3231 Datenblatt Rev. 9, Seite 9 (SDA open-drain, SCL Eingang). Die Signale laufen mit der Versorgung des
+# Moduls, auf der Uhr 3,3 V.
+# Pull-ups auf dem Modul: gemessen 04.11.2026 (DT132A, stromlos) SDA gegen VCC 4,68 kOhm, SCL gegen VCC 4,68 kOhm;
+# auf dem Foto zwei Widerstandsnetze "472". Auf der Platine also keine eigenen I2C-Pull-ups.
+# Ladeschaltung: Widerstand "201" (200 Ohm) am 29.10.2026 entfernt; bei einem neuen Modul wieder entfernen,
+# vorher keine CR2032 einlegen.
+teil = "Uhrmodul DS3231 ZS-042"
+quelle = "Aufdruck am Modul, Foto 04.11.2026; DS3231 Datenblatt Rev. 9 S. 9 (Pinarten)"
+
+[pin]
+1 = { name = "SCL", art = "eingang",    pegel = 3.3, pullup = true, pullup_ohm = 4700, quelle = "Aufdruck am Modul 04.11.2026; Pull-up gemessen 4,68 kOhm" }
+2 = { name = "SDA", art = "open_drain", pegel = 3.3, pullup = true, pullup_ohm = 4700, quelle = "Aufdruck am Modul 04.11.2026; Pull-up gemessen 4,68 kOhm" }
+# Shopblatt RBS10176 S. 2: 2,3 bis 5 V (der Chip allein laut Datenblatt S. 2 bis 5,5 V).
+3 = { name = "VCC", art = "versorgung_ein", spannung = [2.3, 5.0], quelle = "Aufdruck am Modul 04.11.2026; Bereich RBS10176 S. 2" }
+4 = { name = "GND", art = "masse", quelle = "Aufdruck am Modul 04.11.2026" }

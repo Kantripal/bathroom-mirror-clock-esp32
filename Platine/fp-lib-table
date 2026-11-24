@@ -1,0 +1,5 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "Bauteile") (type "KiCad") (uri "${KIPRJMOD}/../bauteile/Bauteile.pretty") (options "") (descr "Eigene Footprints, von platine.py eingetragen"))
+	(lib (name "Uhr") (type "KiCad") (uri "${KIPRJMOD}/lib/Uhr.pretty") (options "") (descr "Eigene Footprints, von platine.py eingetragen"))
+)

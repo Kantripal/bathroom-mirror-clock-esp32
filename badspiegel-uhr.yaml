@@ -1,0 +1,255 @@
+# Badspiegel-Uhr auf dem XIAO ESP32-C3. Belegung: Platine/badspiegel-platine.toml (Netze) und
+# bauteile/xiao-esp32-c3/pins.toml (welcher Stift welcher GPIO ist).
+# Eine Datei fuer alle Tischschritte: fehlende Module melden nur Fehler im Protokoll,
+# so muss nach jedem neu gesteckten Modul nicht neu aufgespielt werden.
+
+esphome:
+  name: badspiegel-uhr
+  friendly_name: Badspiegel-Uhr
+  includes:
+    - briefing.h   # Rechenteil des Morgen-Briefings, geprueft mit briefing_test.cpp
+  # Uhrmodul gleich beim Start lesen: Sein regulaeres Abfragen beginnt erst
+  # nach einer Zufallspause bis 5 s (ESPHome-Scheduler), so lange zeigte die
+  # Anzeige nach einem Stromausfall "----" (gemessen 14.11.2026).
+  on_boot:
+    priority: -100
+    then:
+      - ds1307.read_time:
+          id: rtc_zeit
+      - script.execute: helligkeit_setzen
+
+esp32:
+  board: esp32-c3-devkitm-1
+  variant: esp32c3
+  framework:
+    type: esp-idf
+
+# Der XIAO ESP32-C3 hat keinen USB-Seriell-Wandler, der Chip meldet sich selbst als USB-Geraet (303a:1001).
+logger:
+  hardware_uart: USB_SERIAL_JTAG
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  - platform: esphome
+    encryption:          # ohne eigenen Schluessel nimmt sie den api_key
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # Anforderung 1 aus dem Projektstand: ohne WLAN stellbar bleiben.
+  ap:
+    ssid: "Badspiegel-Uhr"
+    password: !secret ap_password
+
+captive_portal:
+
+# GPIO8 und GPIO9 sind Strapping-Pins und waeren ohne diese Zeilen die Vorgabe.
+# Am XIAO: GPIO4 = Stift D2, GPIO5 = Stift D3 (pins.toml, Schaltplan S. 3).
+i2c:
+  sda: GPIO4
+  scl: GPIO5
+  scan: true          # meldet beim Start 0x68 (Uhr) und meist 0x57 (EEPROM)
+
+time:
+  - platform: sntp
+    id: netz_zeit
+    timezone: Europe/Berlin
+    on_time_sync:
+      then:
+        - ds1307.write_time:
+            id: rtc_zeit
+  # ESPHome kennt keinen DS3231. Der DS1307 hat denselben Registeraufbau
+  # fuer die Zeit (0x00 bis 0x06) und dieselbe Adresse 0x68.
+  # Grenze: ohne Knopfzelle liefert der DS3231 nach dem Einschalten eine
+  # falsche Zeit, bis das WLAN sie korrigiert. Am Tisch gewollt, die Zelle kommt
+  # erst in den Neubau (Ladewiderstand am Modul seit 29.10.2026 entfernt).
+  - platform: ds1307
+    id: rtc_zeit
+    timezone: Europe/Berlin
+
+# Anzeige an 5 V ueber den Pegelwandler RBS10128: GPIO6 = D4 an L1, GPIO7 = D5 an L2, H1 an CLK, H2 an DIO.
+# Pflicht: je 2,2 kOhm von H1 und H2 nach 5 V (R1 und R2 auf der Platine), sonst bleibt sie dunkel
+# (Tischbefund 24.10.2026, am Steckbrett 06.11.2026 bestaetigt).
+display:
+  - platform: tm1637
+    id: anzeige
+    clk_pin: GPIO6
+    dio_pin: GPIO7
+    length: 4
+    intensity: 2         # 0 bis 7; bis zur ersten gueltigen Zeit die Nachtstufe
+    update_interval: 500ms
+    # Morgen-Briefing (15.11.2026): im Morgenfenster 8 s Uhrzeit, dann je 3 s
+    # Aussentemperatur, Hoechstwert heute, Regenmenge in mm; sonst nur Uhrzeit. Ein Wert, den Home
+    # Assistant noch nicht geschickt hat (kurz nach dem Lichtanmachen), wird uebersprungen.
+    lambda: |-
+      const uint32_t ms = millis();
+      if ((int32_t) (id(quittung_bis) - ms) > 0) {
+        it.print(id(briefing).state ? "AUto" : " Uhr");
+        return;
+      }
+      auto jetzt = id(rtc_zeit).now();
+      char seiten[3][8];
+      int n = 0;
+      if (briefing_temperatur(seiten[n], 8, id(ha_aussen).state)) n++;
+      if (briefing_wert(seiten[n], 8, 'H', id(ha_max_heute).state, -99, 999)) n++;
+      if (briefing_wert(seiten[n], 8, 'r', id(ha_regen).state, 0, 999)) n++;
+      int seite = -1;
+      // Runde nach kurzem Druck auf den Joystick, auch ausserhalb des Fensters.
+      if (id(runde_start) != 0) {
+        uint32_t lauf = ms - id(runde_start);
+        if (n == 0 && lauf < 1500) {
+          it.print(" -- ");          // gedrueckt, aber noch keine Werte da
+          return;
+        }
+        if (lauf < 3000u * n) seite = lauf / 3000;
+        else id(runde_start) = 0;
+      }
+      float ab = id(briefing_ab).state, bis = id(briefing_bis).state;
+      if (seite < 0 && id(briefing).state && jetzt.is_valid() && !std::isnan(ab) &&
+          !std::isnan(bis) && briefing_im_fenster(jetzt.hour, (int) ab, (int) bis))
+        seite = briefing_seite(ms, n);
+      if (seite >= 0) {
+        it.print(seiten[seite]);
+        return;
+      }
+      if (!jetzt.is_valid()) {
+        it.print("----");
+        return;
+      }
+      // Der Punkt an der zweiten Stelle schaltet den Doppelpunkt ein.
+      static bool doppelpunkt = false;
+      doppelpunkt = !doppelpunkt;
+      it.strftime(doppelpunkt ? "%H.%M" : "%H%M", jetzt);
+
+globals:
+  # Zuletzt gesetzte Helligkeitsstufe, -1 = noch keine.
+  - id: helligkeit_stufe
+    type: int
+    initial_value: '-1'
+  # 0 = keine Runde; sonst millis() beim kurzen Druck (nie 0, siehe Joystick).
+  - id: runde_start
+    type: uint32_t
+    initial_value: '0'
+  # Bis wann die Quittung nach dem Moduswechsel steht.
+  - id: quittung_bis
+    type: uint32_t
+    initial_value: '0'
+
+# Aus: nur Uhrzeit. Ueberlebt einen Neustart; lang auf den Joystick druecken schaltet um.
+switch:
+  - platform: template
+    id: briefing
+    name: Morgen-Briefing
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+
+# Helligkeit nach Sonnenstand im Geraet selbst (14.11.2026): Die Uhr
+# startet bei jedem Lichtanmachen neu und ist fuer Home Assistant meist offline,
+# so stimmt die Stufe sofort und auch ohne Home Assistant.
+# Nacht = Sonne unter -0,833 Grad, derselbe Massstab wie Sonnenuntergang und
+# -aufgang in Home Assistant. Ort wie zone.home in Home Assistant.
+sun:
+  id: sonne
+  # Eigenen Ort eintragen, zwei Nachkommastellen reichen
+  latitude: 51.0
+  longitude: 10.0
+  time_id: rtc_zeit
+
+number:
+  # Morgenfenster in vollen Stunden, ab einschliesslich, bis ausschliesslich.
+  - platform: template
+    id: briefing_ab
+    name: Briefing ab
+    min_value: 0
+    max_value: 23
+    step: 1
+    mode: box
+    optimistic: true
+    restore_value: true
+    initial_value: 6
+    unit_of_measurement: h
+  - platform: template
+    id: briefing_bis
+    name: Briefing bis
+    min_value: 0
+    max_value: 23
+    step: 1
+    mode: box
+    optimistic: true
+    restore_value: true
+    initial_value: 10
+    unit_of_measurement: h
+
+script:
+  - id: helligkeit_setzen
+    then:
+      - lambda: |-
+          if (!id(rtc_zeit).now().is_valid()) return;
+          // Helligkeit fest: Tag 3, Nacht 2. Im Bad hinter der Streuscheibe angenehm,
+          // nachts nicht blendend. Stufe 0 ist die dunkelste (nicht aus), 7 die hellste.
+          // Andere Werte: die zwei Zahlen hier aendern und neu aufspielen.
+          int stufe = id(sonne).is_above_horizon() ? 3 : 2;
+          // Nur bei einer Aenderung setzen.
+          if (id(helligkeit_stufe) != stufe) {
+            id(anzeige).set_intensity((uint8_t) stufe);
+            id(helligkeit_stufe) = stufe;
+          }
+
+# Prueft jede Minute, ob die Sonne den Horizont gekreuzt hat.
+interval:
+  - interval: 60s
+    then:
+      - script.execute: helligkeit_setzen
+
+# Fuer den Test am Spiegel: Empfang hinter dem Glas, und ob die Uhr beim
+# Lichtanmachen mehrfach neu startet (Laufzeit springt dann auf null).
+sensor:
+  - platform: wifi_signal
+    name: WLAN-Signal
+    update_interval: 30s
+  - platform: uptime
+    name: Laufzeit
+    update_interval: 30s
+  # Werte fuer das Morgen-Briefing. Kommen erst, wenn die Uhr mit Home Assistant verbunden ist.
+  - platform: homeassistant
+    id: ha_aussen
+    entity_id: sensor.aussentemperatur_kombiniert
+    internal: true
+  - platform: homeassistant
+    id: ha_max_heute
+    entity_id: sensor.max_temp_today
+    internal: true
+  # Regenmenge heute in mm (Met.no liefert keine Wahrscheinlichkeit, 15.11.2026), Vorlagen-Sensor
+  # in Home Assistant. Ganze mm, die Anzeige hat keine Dezimalpunkte; unter 0,5 mm steht 0.
+  - platform: homeassistant
+    id: ha_regen
+    entity_id: sensor.regen_heute
+    internal: true
+
+binary_sensor:
+  - platform: gpio
+    id: joystick
+    name: Joystick
+    pin:
+      number: GPIO10
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    on_click:
+      # Kurz: Werte einmal zeigen.
+      - min_length: 50ms
+        max_length: 400ms
+        then:
+          - lambda: id(runde_start) = millis() | 1;
+      # Lang: Modus umschalten und 1 s quittieren.
+      - min_length: 1s
+        max_length: 5s
+        then:
+          - switch.toggle: briefing
+          - lambda: |-
+              id(runde_start) = 0;
+              id(quittung_bis) = millis() + 1000;
