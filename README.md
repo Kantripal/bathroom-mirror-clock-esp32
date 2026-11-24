@@ -13,7 +13,8 @@ Aisler logo placeholder) and an OpenSCAD housing with ready-to-print STL and 3MF
 Licence: CC BY-NC-SA 4.0 (no commercial use).
 
 Stichworte: Badspiegel Uhr Ersatz, Spiegelschrank Uhr geht nach, Spiegeluhr verliert Zeit, Uhrmodul
-Badspiegel, Wessel Licht, XD-903, bathroom mirror clock replacement, ESPHome, Home Assistant.
+Badspiegel, Wessel Licht, XD-903, XD-904, XiongDa, mirror clock module, bathroom mirror clock replacement,
+ESPHome, Home Assistant.
 
 > Dieses Projekt ist nicht mit Wessel Licht für Möbel GmbH oder dem Hersteller des Spiegels verbunden.
 > Die Namen stehen hier nur, damit man das passende Original erkennt.
@@ -33,7 +34,8 @@ Original (Abschnitt „Das Gehäuse“).
 ## So erkennst du das Original
 
 - Schild auf der Rückseite: „90003614 / Mirror Timer 6 - 12 VDC 0.36W 4000 K, LED-Mini-Anschluss“.
-- Aufdruck auf der Platine: „XD-903 REV.03 2015.07.15“.
+- Aufdruck auf der Platine: „XD-903 REV.03 2015.07.15“. Händler nennen als Hersteller XiongDa. Ein
+  ähnliches Modul heißt XD-904. Ob es in dieselbe Schiene passt, habe ich nicht geprüft.
 - Gelbe Ziffern, Knopfzelle CR2032.
 - Gehäuse außen 96,8 × 27,0 × 17,5 mm, mit zwei Flügeln für die Schiene.
 - Zwei Kabelpaare: Strom (12 V) und ein Knopf (kleiner Joystick unter dem Spiegel).
