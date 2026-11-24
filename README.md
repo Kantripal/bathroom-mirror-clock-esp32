@@ -9,7 +9,7 @@ from Home Assistant. It fits the original rail and uses the original 12 V and pu
 the new housing is longer (141.9 mm instead of 96.8 mm) and deeper (27.9 mm instead of 17.5 mm) than the
 original. It fits my mirrors (30 mm gap behind the slot), other mirrors are untested. The
 repository contains the ESPHome configuration, a two-layer KiCad board (Gerber files with and without the
-Aisler logo placeholder) and an OpenSCAD housing. Documentation is in German.
+Aisler logo placeholder) and an OpenSCAD housing with ready-to-print STL and 3MF files. Documentation is in German.
 Licence: CC BY-NC-SA 4.0 (no commercial use).
 
 Stichworte: Badspiegel Uhr Ersatz, Spiegelschrank Uhr geht nach, Spiegeluhr verliert Zeit, Uhrmodul
@@ -156,9 +156,13 @@ Belegung am XIAO (aus `badspiegel-uhr.yaml`):
 
 ## Das Gehäuse
 
-Das Gehäuse ist ein 3D-Druck. Die Datei `Gehaeuse/gehaeuse.scad` öffnest du mit dem kostenlosen Programm
-OpenSCAD. Sie enthält vier Teile: `gehaeuse`, `deckel`, `klotz` und `probe`. Die Flügel und die Lage der
-Ziffern sind wie beim Original.
+Das Gehäuse ist ein 3D-Druck. Es hat vier Teile: `gehaeuse`, `deckel`, `klotz` und `probe`. Die Flügel und
+die Lage der Ziffern sind wie beim Original.
+
+**Fertige Druckdateien** liegen in `Gehaeuse/druck/`, jedes Teil als STL und als 3MF. Lade sie direkt in
+deinen Slicer (zum Beispiel PrusaSlicer oder OrcaSlicer). Die Teile liegen schon richtig herum für den Druck.
+
+Wenn du Maße ändern willst, öffne `Gehaeuse/gehaeuse.scad` mit dem kostenlosen Programm OpenSCAD.
 
 > **Hinweis:** Das neue Gehäuse ist länger als das Original: 141,9 mm statt 96,8 mm. Es ragt beim
 > Einschieben etwa 45 mm weiter in den Spiegel hinein. Es ist auch tiefer: 27,9 mm statt 17,5 mm.
@@ -177,6 +181,11 @@ Die Knopfzelle wechselst du durch das Fenster im Deckel. Der Deckel bleibt dabei
 
 Miss deine Schiene vor dem Druck nach. Die Maße stimmen für meine Spiegel. Für einen anderen Spiegel
 änderst du die Werte am Anfang von `gehaeuse.scad`. Das Programm meldet dann, wenn ein Teil nicht passt.
+Danach exportierst du die Teile neu, zum Beispiel so:
+
+```bash
+openscad -D 'teil="gehaeuse"' -o gehaeuse.stl gehaeuse.scad
+```
 
 ## Programm aufspielen
 
@@ -204,7 +213,8 @@ Danach geht das Aufspielen auch über WLAN. Die Uhr ist aber nur erreichbar, wen
 | `secrets.yaml.example` | Vorlage für WLAN und Schlüssel |
 | `briefing.h`, `briefing_test.cpp` | Rechenteil des Morgen-Briefings und ein Test dafür |
 | `Platine/` | Platine: KiCad-Projekt und die zwei ZIP-Dateien für die Fertigung |
-| `Gehaeuse/` | Gehäuse für den 3D-Druck |
+| `Gehaeuse/druck/` | fertige Druckdateien (STL und 3MF) |
+| `Gehaeuse/gehaeuse.scad` | Gehäuse zum Ändern in OpenSCAD |
 | `Anzeigetest/` | Test der Anzeige an einem Arduino, ohne Löten |
 | `bauteile/` | Steckbriefe der Module: Maße, Belegung, Messwerte |
 | `bilder/` | Fotos |
