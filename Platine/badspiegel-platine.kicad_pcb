@@ -4368,7 +4368,7 @@
 		(layer "Edge.Cuts")
 		(uuid "1aa0ff7e-3b63-4015-a82f-bde8fdbd4bf3")
 	)
-	(gr_text "Badspiegel-Uhr Probe 4 11/2026"
+	(gr_text "Badspiegel-Uhr v1.0 11/2026"
 		(at 116 30 0)
 		(layer "B.SilkS")
 		(uuid "3874f182-10b6-4ec8-ab57-d7c502a80eb3")

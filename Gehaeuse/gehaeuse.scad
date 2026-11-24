@@ -1,5 +1,5 @@
 // ============================================================
-// Gehaeuse der Badspiegel-Uhr, Neubau fuer die Platine Probe 4 (Aisler)
+// Gehaeuse der Badspiegel-Uhr, fuer die Platine v1.0
 //
 // Stand 14.11.2026 (Masse an der bestueckten Platine), gezeichnet 07.11.2026.
 // Ersetzt das Gehaeuse vom 25.10.2026 fuer die Freiverdrahtung (96,79 mm lang,
@@ -81,7 +81,7 @@ leiste_ks    = 2.54;   // Kunststoff der Stiftleiste zwischen Anzeige und Platin
 leiste_luft  = 1.44;   // gemessen 4,01 und 3,95 bis zur Hauptplatine, Mittel 3,98
 spalt_anzeige = leiste_ks + leiste_luft;
 
-// ---- Hauptplatine Probe 4 ----
+// ---- Hauptplatine v1.0 ----
 pl_l = 134.1;
 pl_b = 27.0;
 pl_d = 1.6;

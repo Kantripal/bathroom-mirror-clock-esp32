@@ -4,7 +4,7 @@
   (generator_version "10.0")
   (uuid "5a0247a4-9fc5-5ec0-b9f1-58b37ec7011b")
   (paper "A3")
-  (title_block (title "Badspiegel-Uhr") (date "2026-11-06") (rev "Probe 4") (company "aisler-enig") (comment 1 "134.1 x 27 mm, erzeugt von platine.py"))
+  (title_block (title "Badspiegel-Uhr") (date "2026-11-06") (rev "v1.0") (company "aisler-enig") (comment 1 "134.1 x 27 mm, erzeugt von platine.py"))
   (lib_symbols
 (symbol "Connector:Conn_01x02_Pin"
 		(pin_names

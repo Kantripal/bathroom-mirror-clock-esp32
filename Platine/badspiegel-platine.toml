@@ -15,8 +15,9 @@ titel = "Badspiegel-Uhr"
 breite = 134.1
 hoehe = 27
 regeln = "aisler-enig"
-# So bestellt am 07.11.2026, darum hier nicht aendern. Die naechste Fassung heisst "v5", nicht "Probe 5" (13.11.2026).
-revision = "Probe 4"
+# Fassung v1.0 = gebaute und getestete Platine (bestellt am 07.11.2026 als "Probe 4", seit 24.11.2026 im Aufdruck v1.0;
+# Kupfer, Bohrungen und Umriss sind unveraendert). Folgefassungen heissen v1.1, v2.0 usw., nicht "Probe 5".
+revision = "v1.0"
 datum = "2026-11-06"
 masseflaeche = true
 
