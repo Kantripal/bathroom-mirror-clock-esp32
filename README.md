@@ -118,7 +118,8 @@ Es gibt zwei ZIP-Dateien. Nimm die passende für deinen Hersteller:
 | `Platine/fertigung-ohne-logo.zip` | jeder andere Hersteller. Ohne das Rechteck. |
 
 **Empfehlungscode für Aisler:** Mit dem Code `MakeInEurope-TNGXI` bekommst du 10 Euro Rabatt auf deine
-erste Bestellung bei Aisler.
+erste Bestellung bei Aisler. **Hinweis:** Das ist mein persönlicher Empfehlungscode. Wenn du ihn benutzt,
+bekomme ich 10 Euro Guthaben bei Aisler. Du zahlst dadurch nichts mehr, du sparst die 10 Euro.
 
 Meine Platinen kamen von Aisler (Oberfläche ENIG, 1,6 mm dick, 3 Stück). Das KiCad-Projekt liegt ebenfalls
 in `Platine/`, falls du etwas ändern willst.
