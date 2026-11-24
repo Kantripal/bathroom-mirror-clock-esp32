@@ -48,7 +48,9 @@ Original (Abschnitt „Das Gehäuse“).
 
 - **Sie stellt sich selbst.** Sie holt die genaue Zeit über das WLAN aus dem Internet.
 - **Sie vergisst die Zeit nicht.** Ein Uhrmodul mit Knopfzelle zählt weiter, wenn das Licht aus ist.
-  Nach dem Einschalten steht die Uhrzeit nach etwa 3 Sekunden.
+- **Sie ist sofort da.** Nach dem Einschalten des Lichts steht die Uhrzeit nach 1 bis 3 Sekunden. Sie
+  kommt direkt aus dem Uhrmodul und wartet nicht auf das WLAN.
+- **Sie braucht wenig Strom.** Etwa 0,13 W statt 0,36 W beim Original, also rund ein Drittel.
 - **Sie dimmt sich selbst.** Sie rechnet aus, ob die Sonne schon untergegangen ist, und leuchtet nachts
   schwächer. Dafür braucht sie keine weitere Technik.
 - **Morgen-Briefing (nur mit Home Assistant):** Morgens zeigt sie abwechselnd die Uhrzeit, die
@@ -197,8 +199,18 @@ Textdatei das fertige Programm baut.
 1. Installiere ESPHome (getestet mit Version 2026.10.0).
 2. Kopiere `secrets.yaml.example` nach `secrets.yaml`. Trage dort dein WLAN und die Schlüssel ein.
 3. Trage in `badspiegel-uhr.yaml` unter `sun:` deinen Ort ein. Zwei Stellen nach dem Komma reichen.
-4. Für das Morgen-Briefing: Trage unter `platform: homeassistant` die Namen deiner Sensoren ein.
-5. Schließe den XIAO mit einem USB-C-Kabel an den Rechner an. Das Kabel muss Daten übertragen können,
+4. Empfohlen: Wenn dein Router ein Zeitserver ist (zum Beispiel eine Fritzbox), trage ihn unter
+   `platform: sntp` ein. Dann braucht die Uhr keinen Zugang zum Internet:
+
+   ```yaml
+   - platform: sntp
+     servers:
+       - 192.168.178.1   # Adresse deines Routers
+   ```
+
+   Ohne diesen Eintrag holt die Uhr die Zeit von öffentlichen Zeitservern im Internet.
+5. Für das Morgen-Briefing: Trage unter `platform: homeassistant` die Namen deiner Sensoren ein.
+6. Schließe den XIAO mit einem USB-C-Kabel an den Rechner an. Das Kabel muss Daten übertragen können,
    nicht nur Strom. Führe dann aus:
 
 ```bash
