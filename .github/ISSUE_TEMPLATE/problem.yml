@@ -1,0 +1,39 @@
+name: Problem / Frage (problem or question)
+description: Etwas klappt nicht oder ist unklar. Something does not work or is unclear.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Deutsch oder Englisch, beides ist in Ordnung. German or English, both are fine.
+        Bitte keine WLAN-Passwörter oder Schlüssel aus `secrets.yaml` einfügen.
+        Please do not paste Wi-Fi passwords or keys from `secrets.yaml`.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Was passiert? (What happens?)
+      description: Was hast du erwartet, was passiert stattdessen? What did you expect, what happens instead?
+    validations:
+      required: true
+  - type: input
+    id: mirror
+    attributes:
+      label: Spiegel und Original-Modul (mirror and original module)
+      description: Marke des Spiegelschranks und Aufdruck des alten Moduls, z. B. „Mirror Timer 90003614, XD-903“. Brand of the mirror cabinet and label of the old module.
+  - type: dropdown
+    id: build
+    attributes:
+      label: Aufbau (build)
+      options:
+        - Platine aus diesem Repo (PCB from this repo)
+        - Steckbrett oder eigener Aufbau (breadboard or own build)
+        - Noch nicht gebaut (not built yet)
+  - type: input
+    id: esphome
+    attributes:
+      label: ESPHome-Version (ESPHome version)
+      placeholder: "2026.11.0"
+  - type: textarea
+    id: log
+    attributes:
+      label: Log oder Fotos (log or photos)
+      description: ESPHome-Log, Fotos vom Aufbau oder von der Anzeige. ESPHome log, photos of the build or the display.
