@@ -135,7 +135,7 @@ Löte zuerst die flachen Teile, dann die hohen. Die Anzeige kommt zuletzt, weil 
 6. Löte C1 ein. Das lange Bein kommt in das eckige Loch „+“.
 7. Löte den XIAO ein. Das eckige Loch ist D0.
 8. Löte den Pegelwandler ein. Die Seite mit der Schrift zeigt nach oben, „5V“ liegt neben R1.
-9. Löte das Uhrmodul ein. Lege es dabei auf den gedruckten Klotz (`teil = "klotz"` in der Gehäusedatei).
+9. Löte das Uhrmodul ein. Lege es dabei auf den gedruckten Klotz (`Gehaeuse/druck/klotz.stl`).
 10. Löte die Kabel an J1 (+12V, GND) und J2 (JOY, GND). Halte jedes Kabel mit einem Kabelbinder durch sein
     Loch in der Platine.
 11. Kürze alle Drahtenden unter der Anzeige direkt an der Lötstelle. Dort sind nur etwa 3 mm Platz.
