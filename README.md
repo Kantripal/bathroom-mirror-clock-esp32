@@ -8,8 +8,8 @@ the time over Wi-Fi, keeps it without power, dims itself by sun position and can
 from Home Assistant. It fits the original rail and uses the original 12 V and push-button cables. Note:
 the new housing is longer (141.9 mm instead of 96.8 mm) and deeper (27.9 mm instead of 17.5 mm) than the
 original. It fits my mirrors (30 mm gap behind the slot), other mirrors are untested. The
-repository contains the ESPHome configuration, a two-layer KiCad board (Gerber files with and without the
-Aisler logo placeholder) and an OpenSCAD housing with ready-to-print STL and 3MF files. Documentation is in German.
+repository contains the ESPHome configuration, a two-layer KiCad board (Gerber files with the Aisler logo
+placeholder, usable at any manufacturer) and an OpenSCAD housing with ready-to-print STL and 3MF files. Documentation is in German.
 Licence: CC BY-NC-SA 4.0 (no commercial use).
 
 Stichworte: Badspiegel Uhr Ersatz, Spiegelschrank Uhr geht nach, Spiegeluhr verliert Zeit, Uhrmodul
@@ -110,12 +110,12 @@ verbinden Leiterbahnen die Teile. Man lässt sie bei einem Platinenhersteller fe
 eine ZIP-Datei mit den Fertigungsdateien hoch. Die Platine ist 134,1 × 27 mm groß. Sie hat Leiterbahnen auf
 beiden Seiten. Das ist bei jedem Hersteller der Standard.
 
-Es gibt zwei ZIP-Dateien. Nimm die passende für deinen Hersteller:
+Die Fertigungsdateien liegen in `Platine/fertigung.zip`. Sie passen für jeden Hersteller.
 
-| Datei | Für wen |
-|---|---|
-| `Platine/fertigung-aisler.zip` | Bestellung bei Aisler (Deutschland). Auf der Rückseite ist ein leeres Rechteck. Aisler druckt dort sein Logo auf und gibt dafür einen Rabatt. |
-| `Platine/fertigung-ohne-logo.zip` | jeder andere Hersteller. Ohne das Rechteck. |
+Auf der Rückseite ist ein leeres Rechteck aus sehr dünnen Linien. Bei Aisler (Deutschland) ist das ein
+Platzhalter: Aisler druckt dort sein Logo auf und gibt dafür einen Rabatt. Andere Hersteller drucken den
+Rahmen dünn oder gar nicht, manche fragen kurz nach. Antworte dann: „Der Rahmen kann entfallen.“ Im
+Gehäuse sieht man ihn nicht, und er ist nur Aufdruck, keine Leiterbahn.
 
 **Empfehlungscode für Aisler:** Mit dem Code `MakeInEurope-TNGXI` bekommst du 10 Euro Rabatt auf deine
 erste Bestellung bei Aisler. **Hinweis:** Das ist mein persönlicher Empfehlungscode. Wenn du ihn benutzt,
